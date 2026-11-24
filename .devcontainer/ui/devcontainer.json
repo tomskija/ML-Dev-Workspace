@@ -1,0 +1,25 @@
+{
+  "name": "ML-Platform-UI (workspace)",
+  "dockerComposeFile": "../../docker-compose.yml",
+  "service": "ui",
+  "runServices": [
+    "ui"
+  ],
+  "workspaceFolder": "/app",
+  "shutdownAction": "none",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "portsAttributes": {
+    "5173": {
+      "label": "ML Platform UI",
+      "onAutoForward": "notify"
+    }
+  },
+  "remoteUser": "root"
+}

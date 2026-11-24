@@ -1,0 +1,93 @@
+{
+  "workspace": {
+    "name": "ml-dev-workspace",
+    "projects_root": "..",
+    "mlflow_port": 5050,
+    "postgres_port": 5433,
+    "postgres_db": "production_prediction",
+    "postgres_user": "admin",
+    "postgres_password": "admin",
+    "ui": {
+      "repo": "ML-Platform-UI",
+      "git": "git@github.com:tomskija/ML-Platform-UI.git",
+      "port": 5173
+    }
+  },
+  "projects": [
+    {
+      "name": "ppml",
+      "label": "Production-Prediction-ML",
+      "repo": "Production-Prediction-ML",
+      "git": "git@github.com:tomskija/Production-Prediction-ML.git",
+      "package": "productionPredictionCalculator",
+      "cpus": 4,
+      "memory": "8g",
+      "uses_postgres": true,
+      "forward_ports": [
+        3000
+      ],
+      "post_create": "cd /workspace/frontend && npm install",
+      "api": {
+        "port": 8000,
+        "host_port": 8100,
+        "command": "uvicorn api:app --host 0.0.0.0 --port 8000 --reload"
+      },
+      "env": {
+        "POSTGRES_HOST": "postgres",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "production_prediction",
+        "POSTGRES_USER": "admin",
+        "POSTGRES_PASSWORD": "admin",
+        "AZURE_SUBSCRIPTION_ID": "${AZURE_SUBSCRIPTION_ID:-}",
+        "AZURE_RESOURCE_GROUP": "${AZURE_RESOURCE_GROUP:-}",
+        "AZURE_ML_WORKSPACE": "${AZURE_ML_WORKSPACE:-}",
+        "AZURE_TENANT_ID": "${AZURE_TENANT_ID:-}",
+        "AZURE_CLIENT_ID": "${AZURE_CLIENT_ID:-}",
+        "AZURE_CLIENT_SECRET": "${AZURE_CLIENT_SECRET:-}"
+      },
+      "set_pythonpath": false
+    },
+    {
+      "name": "petro",
+      "label": "3D-Petrophysical-Prediction-ML",
+      "repo": "3D-Petrophysical-Prediction-ML",
+      "git": "git@github.com:tomskija/3D-Petrophysical-Prediction-ML.git",
+      "package": "rockPropCalculator",
+      "cpus": 2,
+      "memory": "4g",
+      "api": {
+        "port": 8001,
+        "host_port": 8101,
+        "command": "uvicorn api:app --host 0.0.0.0 --port 8001 --reload"
+      }
+    },
+    {
+      "name": "weather",
+      "label": "Weather-Forecasting-ML",
+      "repo": "Weather-Forecasting-ML",
+      "git": "git@github.com:tomskija/Weather-Forecasting-ML.git",
+      "package": "weatherForcastingCalculator",
+      "cpus": 2,
+      "memory": "4g",
+      "api": {
+        "port": 8002,
+        "host_port": 8102,
+        "command": "uvicorn api:app --host 0.0.0.0 --port 8002 --reload"
+      }
+    },
+    {
+      "name": "pointcloud",
+      "label": "Point-Cloud-ML",
+      "repo": "Point-Cloud-ML",
+      "git": "git@github.com:tomskija/Point-Cloud-ML.git",
+      "package": "pointCloudMLCalculator",
+      "cpus": 2,
+      "memory": "4g",
+      "api": {
+        "port": 8003,
+        "host_port": 8103,
+        "command": "uvicorn api:app --host 0.0.0.0 --port 8003 --reload"
+      }
+    }
+  ]
+}

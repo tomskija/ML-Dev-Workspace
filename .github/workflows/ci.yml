@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main, release/dev]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generated files match projects.json
+        run: python3 generate.py --check
+
+      - name: Compose file is valid
+        run: |
+          for r in $(python3 -c "import json; c=json.load(open('projects.json')); print(' '.join([p['repo'] for p in c['projects']] + [c['workspace'].get('ui', {}).get('repo', '')]))"); do
+            mkdir -p ../$r
+          done
+          docker compose config -q
